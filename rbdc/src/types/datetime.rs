@@ -35,11 +35,8 @@ impl<'de> Deserialize<'de> for FastDateTime {
     where
         D: Deserializer<'de>,
     {
-        #[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
-        #[serde(rename = "DateTime")]
-        pub struct DateTimeValue(pub Value);
-        let v = DateTimeValue::deserialize(deserializer)?;
-        match v.0 {
+        let v = Value::deserialize(deserializer)?;
+        match v {
             Value::I32(u) => Ok(Self(fastdate::DateTime::from_timestamp_millis(u as i64))),
             Value::U32(u) => Ok(Self(fastdate::DateTime::from_timestamp_millis(u as i64))),
             Value::I64(u) => Ok(Self(fastdate::DateTime::from_timestamp_millis(u))),
@@ -53,7 +50,7 @@ impl<'de> Deserialize<'de> for FastDateTime {
             _ => {
                 return Err(D::Error::custom(&format!(
                     "unsupported type DateTime({})",
-                    v.0
+                    v
                 )));
             }
         }

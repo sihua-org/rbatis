@@ -78,7 +78,7 @@ pub fn is_debug_mode() -> bool {
 mod test {
     use crate::decode::decode;
     use rbs::value::map::ValueMap;
-    use rbs::{Value};
+    use rbs::Value;
     use std::collections::HashMap;
 
     #[test]
